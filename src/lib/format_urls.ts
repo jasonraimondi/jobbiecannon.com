@@ -1,9 +1,10 @@
 function formatAllowedSites(domains: string[]): string {
-	return domains.reduce<string>((prev: string, next: string) => {
+	const allowed = domains.reduce<string>((prev: string, next: string) => {
 		next = `site:${next}`;
 		if (prev === '') return next;
 		return `${next} OR ${prev}`;
 	}, '');
+	return `(${allowed})`;
 }
 
 function formatExactSearchWords(words: string[]) {
@@ -51,10 +52,6 @@ export function formatSearchURL(search: SearchArgs): URL {
 	const formattedBlocked = formatBlockedWords(search.blockedWords ?? []);
 
 	let q = '';
-
-	if (formattedSites !== '') {
-		q += `${formattedSites}`;
-	}
 	if (formattedSearch !== '') {
 		q += ` ${formattedSearch}`;
 	}
@@ -66,6 +63,10 @@ export function formatSearchURL(search: SearchArgs): URL {
 	}
 	if (formattedBlocked !== '') {
 		q += ` ${formattedBlocked} `;
+	}
+
+	if (formattedSites !== '') {
+		q += `${formattedSites}`;
 	}
 
 	let baseURL: string;

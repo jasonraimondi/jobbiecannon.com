@@ -30,7 +30,7 @@
 						<Check size="15" />
 					</div>
 				{/if}
-				<span class="capitalize">{f}</span>
+				<span>{f}</span>
 			</button>
 		</li>
 	{/each}
