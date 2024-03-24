@@ -3,6 +3,9 @@
 	import { search, searchURL } from '$lib';
 	import { getToastStore } from '@skeletonlabs/skeleton';
 	import AllowedSites from './AllowedSites.svelte';
+	import SetSearch from './SetSearch.svelte';
+	import { clipboard } from '@skeletonlabs/skeleton';
+	import ClipboardCopy from 'svelte-lucide/ClipboardCopy.svelte';
 
 	const toastStore = getToastStore();
 
@@ -13,7 +16,7 @@
 			/^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*(?:\/[a-zA-Z0-9_\-\.~]+)*$/;
 		const isValid = domainRegex.test(domain);
 		if (isValid) {
-			$search.allowedSites = [...$search.allowedSites, domain];
+			sitesSearch = [...sitesSearch, domain];
 		} else {
 			toastStore.trigger({
 				message: `Must be a valid domain, do not include https://`,
@@ -30,6 +33,28 @@
 <div class="container h-full mx-auto flex justify-center items-center">
 	<div class="space-y-5 w-full">
 		<h1 class="h1 pt-8"><span class="gradient-heading">Jobbie Cannon</span></h1>
+
+		<div class="card p-4 flex gap-2">
+			<div class="flex-1">
+				<code class="" data-clipboard="searchQueryClipboard"
+					>{$searchURL.google.searchParams.get('q')}</code
+				>
+			</div>
+			<div>
+				<button
+					class="btn-icon variant-filled"
+					use:clipboard={{ element: 'searchQueryClipboard' }}
+					on:copyComplete={() => {
+						toastStore.trigger({
+							message: 'Copied to clipboard',
+							background: 'variant-filled-success'
+						});
+					}}
+				>
+					<ClipboardCopy />
+				</button>
+			</div>
+		</div>
 
 		<ul class="flex gap-2">
 			<li>
@@ -51,6 +76,8 @@
 				>
 			</li>
 		</ul>
+
+		<SetSearch />
 
 		<div class="card p-4">
 			<h3 class="pb-2">What job boards do you want to search?</h3>
