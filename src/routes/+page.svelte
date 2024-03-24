@@ -5,7 +5,7 @@
 	import PresetSearches from './PresetSearches.svelte';
 	import { clipboard } from '@skeletonlabs/skeleton';
 	import ClipboardCopy from 'svelte-lucide/ClipboardCopy.svelte';
-	import SetJobBoards from './SetJobBoards.svelte';
+	import SetAllowedSites from './SetAllowedSites.svelte';
 
 	const toastStore = getToastStore();
 
@@ -55,7 +55,7 @@
 			<PresetSearches />
 		</div>
 
-		<SetJobBoards />
+		<SetAllowedSites />
 
 		<div class="card p-4">
 			<h3 class="pb-2">Search Words</h3>

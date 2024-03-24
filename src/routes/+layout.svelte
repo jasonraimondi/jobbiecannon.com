@@ -23,13 +23,21 @@
 <slot />
 
 <div class="floater hidden md:block">
-	<a class="btn-icon bg-gradient-to-br variant-gradient-primary-tertiary" href="https://github.com/jasonraimondi/jobbiecannon.com" target="_blank">
+	<a
+		class="btn-icon bg-gradient-to-br variant-gradient-primary-tertiary"
+		href="https://github.com/jasonraimondi/jobbiecannon.com"
+		target="_blank"
+	>
 		<GitHub />
 	</a>
 </div>
 
 <div class="md:hidden flex flex-row-reverse pr-4 pb-4 pt-2">
-	<a class="btn-icon bg-gradient-to-br variant-gradient-primary-tertiary" href="https://github.com/jasonraimondi/jobbiecannon.com" target="_blank">
+	<a
+		class="btn-icon bg-gradient-to-br variant-gradient-primary-tertiary"
+		href="https://github.com/jasonraimondi/jobbiecannon.com"
+		target="_blank"
+	>
 		<GitHub />
 	</a>
 </div>

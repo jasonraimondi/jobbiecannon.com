@@ -13,6 +13,9 @@ dependencies:
     version: 11.9.0
 
 devDependencies:
+  '@jmondi/browser-storage':
+    specifier: ^1.8.1
+    version: 1.8.1
   '@playwright/test':
     specifier: ^1.28.1
     version: 1.42.1
@@ -82,6 +85,9 @@ devDependencies:
   vitest:
     specifier: ^1.2.0
     version: 1.4.0(@types/node@20.11.30)
+  zod:
+    specifier: ^3.22.4
+    version: 3.22.4
 
 packages:
 
@@ -829,6 +835,11 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@sinclair/typebox': 0.27.8
+    dev: true
+
+  /@jmondi/browser-storage@1.8.1:
+    resolution: {integrity: sha512-9/EvanDVonEvG+qj6t9uJZkgM3AsRuvvt6YLADDT/9CB7bn3738/mSoEt6Ediyr25mPh9vSY8mn7nFNIpeV5Ag==}
+    engines: {node: '>=18.0.0'}
     dev: true
 
   /@jridgewell/gen-mapping@0.3.5:

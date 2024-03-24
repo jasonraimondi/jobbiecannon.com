@@ -20,7 +20,7 @@
 					searchName: jobTitle,
 					allowedSites: allowedSites,
 					provider: 'google',
-					searchWords: ['shopify', 'fullstack'],
+					searchWords: ['fullstack'],
 					exactWords: ['remote', 'software engineer', 'typescript'],
 					likeWords: ['senior'],
 					blockedWords: ['junior', 'intern', 'part-time']
@@ -47,6 +47,8 @@
 	<div class="btn-group variant-filled text-xs">
 		<button class="text-xs" on:click={() => setSearch('product-manager')}>Product Manager</button>
 		<button class="text-xs" on:click={() => setSearch('ui-ux-designer')}>Designer</button>
-		<button class="text-xs" on:click={() => setSearch('software-engineer')}>Software Engineer</button>
+		<button class="text-xs" on:click={() => setSearch('software-engineer')}
+			>Software Engineer</button
+		>
 	</div>
 </div>
