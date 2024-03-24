@@ -6,6 +6,7 @@
 	import SetSearch from './SetSearch.svelte';
 	import { clipboard } from '@skeletonlabs/skeleton';
 	import ClipboardCopy from 'svelte-lucide/ClipboardCopy.svelte';
+	import SetJobBoards from './SetJobBoards.svelte';
 
 	const toastStore = getToastStore();
 
@@ -31,7 +32,7 @@
 </script>
 
 <div class="container h-full mx-auto flex justify-center items-center">
-	<div class="space-y-5 w-full">
+	<div class="space-y-5 w-full px-2">
 		<h1 class="h1 pt-8"><span class="gradient-heading">Jobbie Cannon</span></h1>
 
 		<div class="card p-4 flex gap-2">
@@ -78,20 +79,7 @@
 		</ul>
 
 		<SetSearch />
-
-		<div class="card p-4">
-			<h3 class="pb-2">What job boards do you want to search?</h3>
-			<div class="pb-4">
-				<AllowedSites />
-			</div>
-			<InputChip
-				class="w-full"
-				name="job-board-domains"
-				bind:value={sitesSearch}
-				placeholder="Any additional job boards. Ex: keyvalues.com"
-				validation={isValidDomain}
-			/>
-		</div>
+		<SetJobBoards />
 
 		<div class="card p-4">
 			<h3 class="pb-2">Search Words</h3>
