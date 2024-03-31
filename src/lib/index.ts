@@ -21,13 +21,6 @@ search.subscribe((value) => {
 	LOCAL_STORAGE.full_search.set(value);
 });
 
-export const searchURL = derived(search, ($search) => {
-	return {
-		bing: formatSearchURL({ ...$search, provider: 'bing' }),
-		google: formatSearchURL($search)
-	};
-});
-
 export const additionalAllowedSites = writable<string[]>(
 	LOCAL_STORAGE.additional_sites.get() ?? ['keyvalues.com']
 );
@@ -35,3 +28,14 @@ export const additionalAllowedSites = writable<string[]>(
 additionalAllowedSites.subscribe((value) => {
 	LOCAL_STORAGE.additional_sites.set(value);
 });
+
+export const searchURL = derived(
+	[search, additionalAllowedSites],
+	([$search, $additionalSites]) => {
+		const allowedSites = [...$search.allowedSites, ...$additionalSites];
+		return {
+			bing: formatSearchURL({ ...$search, allowedSites, provider: 'bing' }),
+			google: formatSearchURL({ ...$search, allowedSites })
+		};
+	}
+);
