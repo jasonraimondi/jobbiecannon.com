@@ -32,16 +32,6 @@ export const search = writable<SearchArgs>(LOCAL_STORAGE.full_search.get() ?? se
 search.subscribe((value) => {
 	LOCAL_STORAGE.full_search.set(value);
 	const params = new URLSearchParams(browser ? window.location.search : '');
-	if (typeof value.searchName === 'string') {
-		params.set('searchName', value.searchName);
-	} else {
-		params.delete('searchName');
-	}
-	if (typeof value.provider === 'string') {
-		params.set('provider', value.provider);
-	} else {
-		params.delete('provider');
-	}
 	if (Array.isArray(value.allowedSites) && value.allowedSites.length) {
 		params.set('allowedSites', value.allowedSites.join(','));
 	} else {
