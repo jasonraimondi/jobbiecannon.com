@@ -42,19 +42,20 @@
 	>
 		<GitHub />
 	</a>
-	<a class=" btn-icon bg-gradient-to-br variant-gradient-primary-tertiary"
-		 href="https://jasonraimondi.com"
-		 target="_blank"
+	<a
+		class=" btn-icon bg-gradient-to-br variant-gradient-primary-tertiary"
+		href="https://jasonraimondi.com"
+		target="_blank"
 	>
 		<UserCircle />
 	</a>
 </div>
 
 <style>
-  .floater {
-    position: fixed;
-    top: 1rem;
-    left: 1rem;
-    z-index: 1000;
-  }
+	.floater {
+		position: fixed;
+		top: 1rem;
+		left: 1rem;
+		z-index: 1000;
+	}
 </style>

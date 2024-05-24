@@ -51,7 +51,6 @@
 					<a href={$searchURL.bing.href} target="_blank" rel="noopener nofollower">Search Bing</a>
 				</div>
 			</div>
-
 			<PresetSearches />
 		</div>
 
