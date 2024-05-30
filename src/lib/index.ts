@@ -61,7 +61,9 @@ search.subscribe((value) => {
 		params.delete('blockedWords');
 	}
 
-	if (browser) goto(`?${params.toString()}`).then();
+	if (browser) {
+		history.pushState(null, '', `?${params.toString()}`);
+	}
 });
 
 export const additionalAllowedSites = writable<string[]>(
