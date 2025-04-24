@@ -14,7 +14,7 @@
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
 	import GitHub from 'svelte-lucide/Github.svelte';
-	import UserCircle from 'svelte-lucide/UserCircle.svelte';
+	import UserCircle from 'svelte-lucide/UserRound.svelte';
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
