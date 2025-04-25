@@ -1,52 +1,56 @@
 <script lang="ts">
-	import { CodeBlock, InputChip } from '@skeletonlabs/skeleton';
 	import { search, searchURL } from '$lib';
-	import { getToastStore } from '@skeletonlabs/skeleton';
 	import PresetSearches from './PresetSearches.svelte';
-	import { clipboard } from '@skeletonlabs/skeleton';
 	import ClipboardCopy from 'svelte-lucide/ClipboardCopy.svelte';
 	import SetAllowedSites from './SetAllowedSites.svelte';
-
-	const toastStore = getToastStore();
+	import toast from 'svelte-french-toast';
+	import InputChip from '$lib/ui/input/InputChip.svelte';
 
 	let searchJSON = $derived(JSON.stringify($search, null, 2));
 	let searchURLJSON = $derived(JSON.stringify($searchURL, null, 2));
+
+	function copyToClipboard(text: string) {
+		navigator.clipboard
+			.writeText(text)
+			.then(() => {
+				toast.success('Copied to clipboard');
+			})
+			.catch(() => {
+				toast.error('Failed to copy');
+			});
+	}
 </script>
 
-<div class="container h-full mx-auto flex justify-center items-center">
-	<div class="space-y-5 w-full px-2 md:pl-12 lg:pl-0">
-		<h1 class="h1 pt-8 md:pt-16"><span class="gradient-heading">Jobbie Cannon</span></h1>
+<div class="container mx-auto flex h-full items-center justify-center">
+	<div class="w-full space-y-5 px-2 md:pl-12 lg:pl-0">
+		<h1 class="h1 pt-8 md:pt-16">
+			<span class="box-decoration-clone bg-clip-text text-transparent">Jobbie Cannon</span>
+		</h1>
 
-		<div class="card p-4 flex gap-2">
+		<div class="card flex gap-2 p-4">
 			<div class="flex-1">
 				<div>
 					<h4 class="pb-2">Search Query:</h4>
 					<code class="" data-clipboard="searchQueryClipboard">
-						{$searchURL.google.searchParams.get('q')}
+						{$searchURL.google.searchParams.get("q")}
 					</code>
 				</div>
 			</div>
 			<div>
 				<button
 					class="btn-icon variant-filled"
-					use:clipboard={{ element: 'searchQueryClipboard' }}
-					oncopycomplete={() => {
-						toastStore.trigger({
-							message: 'Copied to clipboard',
-							background: 'variant-filled-success'
-						});
-					}}
+					onclick={() => copyToClipboard($searchURL.google.searchParams.get("q") ?? "")}
 				>
 					<ClipboardCopy />
 				</button>
 			</div>
 		</div>
 
-		<div class="flex gap-2 flex-col md:flex-row">
+		<div class="flex flex-col gap-2 md:flex-row">
 			<div>
-				<div class="btn-group bg-gradient-to-br variant-gradient-primary-secondary text-white">
+				<div class="btn-group variant-gradient-primary-secondary bg-gradient-to-br text-white">
 					<a href={$searchURL.google.href} target="_blank" rel="noopener nofollower"
-						>Search Google</a
+					>Search Google</a
 					>
 					<a href={$searchURL.bing.href} target="_blank" rel="noopener nofollower">Search Bing</a>
 				</div>
@@ -95,18 +99,5 @@
 				placeholder="Exclude words, e.g., junior, intern, part-time"
 			/>
 		</div>
-
-		<CodeBlock language="json" code={searchURLJSON}></CodeBlock>
-		<CodeBlock language="json" code={searchJSON}></CodeBlock>
 	</div>
 </div>
-
-<style>
-	.gradient-heading {
-		@apply bg-clip-text text-transparent box-decoration-clone;
-		/* Direction */
-		@apply bg-gradient-to-br;
-		/* Color Stops */
-		@apply from-primary-500 via-tertiary-500 to-secondary-500;
-	}
-</style>
