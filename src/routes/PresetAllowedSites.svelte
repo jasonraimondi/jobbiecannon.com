@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { createBubbler } from 'svelte/legacy';
+
+	const bubble = createBubbler();
 	import Check from 'svelte-lucide/Check.svelte';
 	import { allowedSites } from '$lib/format_urls.js';
 	import { search } from '$lib';
@@ -20,10 +23,10 @@
 		<li>
 			<button
 				class="chip {isAllowed ? 'variant-glass-tertiary' : 'variant-filled'}"
-				on:click={() => {
+				onclick={() => {
 					toggleAllowedSites(f);
 				}}
-				on:keypress
+				onkeypress={bubble('keypress')}
 			>
 				{#if isAllowed}
 					<div class="">

@@ -45,9 +45,9 @@
 
 <div>
 	<div class="btn-group variant-filled text-xs">
-		<button class="text-xs" on:click={() => setSearch('product-manager')}>Product Manager</button>
-		<button class="text-xs" on:click={() => setSearch('ui-ux-designer')}>Designer</button>
-		<button class="text-xs" on:click={() => setSearch('software-engineer')}
+		<button class="text-xs" onclick={() => setSearch('product-manager')}>Product Manager</button>
+		<button class="text-xs" onclick={() => setSearch('ui-ux-designer')}>Designer</button>
+		<button class="text-xs" onclick={() => setSearch('software-engineer')}
 			>Software Engineer</button
 		>
 	</div>

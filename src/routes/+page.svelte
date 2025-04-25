@@ -9,8 +9,8 @@
 
 	const toastStore = getToastStore();
 
-	$: searchJSON = JSON.stringify($search, null, 2);
-	$: searchURLJSON = JSON.stringify($searchURL, null, 2);
+	let searchJSON = $derived(JSON.stringify($search, null, 2));
+	let searchURLJSON = $derived(JSON.stringify($searchURL, null, 2));
 </script>
 
 <div class="container h-full mx-auto flex justify-center items-center">
@@ -30,7 +30,7 @@
 				<button
 					class="btn-icon variant-filled"
 					use:clipboard={{ element: 'searchQueryClipboard' }}
-					on:copyComplete={() => {
+					oncopycomplete={() => {
 						toastStore.trigger({
 							message: 'Copied to clipboard',
 							background: 'variant-filled-success'

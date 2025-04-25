@@ -15,6 +15,11 @@
 	import { storePopup } from '@skeletonlabs/skeleton';
 	import GitHub from 'svelte-lucide/Github.svelte';
 	import UserCircle from 'svelte-lucide/UserRound.svelte';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
@@ -22,7 +27,8 @@
 </script>
 
 <Toast />
-<slot />
+
+{@render children?.()}
 
 <div class="floater hidden md:block">
 	<a
