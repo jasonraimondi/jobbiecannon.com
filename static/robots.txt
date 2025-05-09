@@ -1,3 +1,0 @@
-# All robots allowed
-User-agent: *
-Disallow:
