@@ -1,2 +1,61 @@
-@import 'tailwindcss';
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
 @plugin '@tailwindcss/forms';
+
+@import "./styles/_base.css" layer(base);
+
+@theme {
+  --color-primary: var(--color-emerald-500);
+  --color-primary-dark: var(--color-emerald-800);
+  --color-secondary: var(--color-gray-200);
+  --color-secondary-dark: var(--color-gray-400);
+  --color-danger: var(--color-rose-500);
+  --color-danger-dark: var(--color-rose-700);
+  --color-info: var(--color-cyan-500);
+  --color-info-dark: var(--color-cyan-700);
+  --color-success: var(--color-emerald-500);
+  --color-success-dark: var(--color-emerald-700);
+
+  --text-xxxl: clamp(2.5rem, 5vw, 3.052rem);
+  --text-xxl: clamp(2rem, 4vw, 2.441rem);
+  --text-xl: clamp(1.5rem, 3vw, 1.953rem);
+  --text-lg: clamp(1rem, 2vw, 1.25rem);
+  --text-md: clamp(0.875rem, 1.5vw, 1rem);
+  --text-sm: clamp(0.75rem, 1vw, 0.8rem);
+  --text-xs: clamp(0.625rem, 0.8vw, 0.64rem);
+  --text-xxs: clamp(0.5rem, 0.6vw, 0.512rem);
+
+  --font-sans:
+    system-ui, BlinkMacSystemFont, -apple-system, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+    Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  --font-serif:
+    Constantia, Lucida Bright, Lucidabright, Lucida Serif, Lucida, DejaVu Serif,
+    Bitstream Vera Serif, Liberation Serif, Georgia, serif;
+  --font-mono:
+    JetBrains Mono, Fira Code Retina, Menlo, Monaco, Consolas, Liberation Mono, Courier New,
+    monospace;
+
+  --font-weight-thin: 100;
+  --font-weight-extralight: 200;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+}
+
+:root {
+  --fg-color: var(--color-slate-900);
+  --bg-color: var(--color-slate-100);
+
+  --h1: var(--text-xl);
+  --h2: var(--text-lg);
+  --h3: var(--text-md);
+  --h4: var(--text-sm);
+  --h5: var(--text-xs);
+  --h6: var(--text-xs);
+}
