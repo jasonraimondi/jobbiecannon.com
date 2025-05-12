@@ -1,8 +1,11 @@
 import type { SearchProvider, TimeRange } from "./search";
 import { buildSearchURL, defaultJobSites } from "./search";
 
+const STORAGE_KEY = "search_state_data";
+
 /**
  * State manager for search parameters using Svelte's $state reactivity
+ * with local storage persistence
  */
 class SearchState {
   // Basic search configuration
@@ -29,6 +32,89 @@ class SearchState {
   // Additional features
   safeSearch = $state<boolean>(true);
   numResults = $state<number | undefined>(undefined);
+
+  constructor() {
+    this.loadFromLocalStorage();
+    this.setupAutoSave();
+  }
+
+  /**
+   * Load state from localStorage on initialization
+   */
+  loadFromLocalStorage() {
+    try {
+      const savedState = localStorage.getItem(STORAGE_KEY);
+      if (savedState) {
+        const parsedState = JSON.parse(savedState);
+
+        // Restore all properties from saved state
+        this.query = parsedState.query || [];
+        this.exactQuery = parsedState.exactQuery || [];
+        this.likeQuery = parsedState.likeQuery || [];
+        this.doesNotIncludeQuery = parsedState.doesNotIncludeQuery || [];
+        this.allowedSites = parsedState.allowedSites || [];
+        this.excludedSites = parsedState.excludedSites || [];
+        this.timeRange = parsedState.timeRange;
+        this.fileTypes = parsedState.fileTypes || [];
+        this.language = parsedState.language;
+        this.safeSearch = parsedState.safeSearch ?? true;
+        this.numResults = parsedState.numResults;
+      }
+    } catch (error) {
+      console.error("Failed to load search state from localStorage:", error);
+    }
+  }
+
+  /**
+   * Save the current state to localStorage
+   */
+  saveToLocalStorage() {
+    try {
+      const stateToSave = {
+        query: this.query,
+        exactQuery: this.exactQuery,
+        likeQuery: this.likeQuery,
+        doesNotIncludeQuery: this.doesNotIncludeQuery,
+        allowedSites: this.allowedSites,
+        excludedSites: this.excludedSites,
+        timeRange: this.timeRange,
+        fileTypes: this.fileTypes,
+        language: this.language,
+        safeSearch: this.safeSearch,
+        numResults: this.numResults,
+      };
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToSave));
+    } catch (error) {
+      console.error("Failed to save search state to localStorage:", error);
+    }
+  }
+
+  /**
+   * Set up automatic saving of state changes to localStorage
+   */
+  setupAutoSave() {
+    // Create an effect to watch all state properties
+    $effect(() => {
+      // Reference all state properties to make effect depend on them
+      const _ = [
+        this.query,
+        this.exactQuery,
+        this.likeQuery,
+        this.doesNotIncludeQuery,
+        this.allowedSites,
+        this.excludedSites,
+        this.timeRange,
+        this.fileTypes,
+        this.language,
+        this.safeSearch,
+        this.numResults
+      ];
+
+      // Save to localStorage whenever any state changes
+      this.saveToLocalStorage();
+    });
+  }
 
   getSearchURL(provider: SearchProvider): URL {
     return buildSearchURL({
@@ -59,6 +145,9 @@ class SearchState {
     this.language = undefined;
     this.safeSearch = true;
     this.numResults = undefined;
+
+    // Also clear localStorage when resetting
+    localStorage.removeItem(STORAGE_KEY);
   }
 
   setJobSearchDefaults(jobTitle: string = "") {
@@ -66,6 +155,9 @@ class SearchState {
     this.query.push(jobTitle);
     this.allowedSites = [...defaultJobSites];
     this.timeRange = "past_day";
+
+    // Save the new defaults
+    this.saveToLocalStorage();
   }
 
   addMainTerm(term: string) {

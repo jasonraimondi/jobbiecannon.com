@@ -1,39 +1,67 @@
-<!-- SearchBuilder.svelte -->
 <script lang="ts">
   import { searchState } from "$lib/state.svelte";
 
-  // Reactive value for current URL
+  type FormSubmitEvent = SubmitEvent & {
+    currentTarget: EventTarget & HTMLFormElement;
+  };
+
   $effect(() => {
     googleUrl = searchState.getSearchURL("google").toString();
     bingUrl = searchState.getSearchURL("bing").toString();
     kagiUrl = searchState.getSearchURL("kagi").toString();
   });
 
-  let newQuery = $state("");
-  let newExactTerm = $state("");
-  let newSite = $state("");
+  let newQuery = $state<string>("");
+  let newExactTerm = $state<string>("");
+  let newSite = $state<string>("");
+
   let bingUrl = $derived(searchState.getSearchURL("bing").toString());
   let googleUrl = $derived(searchState.getSearchURL("google").toString());
   let kagiUrl = $derived(searchState.getSearchURL("kagi").toString());
 
-  function handleAddMainTerm() {
+  function handleAddMainTerm(event: FormSubmitEvent): void {
+    event.preventDefault();
     if (newQuery) {
       searchState.addMainTerm(newQuery);
       newQuery = "";
     }
   }
 
-  function handleAddExactTerm() {
+  function handleAddExactTerm(event: FormSubmitEvent): void {
+    event.preventDefault();
     if (newExactTerm) {
       searchState.addExactTerm(newExactTerm);
       newExactTerm = "";
     }
   }
 
-  function handleAddSite() {
+  function handleAddSite(event: FormSubmitEvent): void {
+    event.preventDefault();
     if (newSite) {
       searchState.addAllowedSite(newSite);
       newSite = "";
+    }
+  }
+
+  function handleAddLikeTerm(event: FormSubmitEvent): void {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const term = formData.get('likeTerm') as string;
+
+    if (term) {
+      searchState.addLikeTerm(term);
+      event.currentTarget.reset();
+    }
+  }
+
+  function handleAddExcludeTerm(event: FormSubmitEvent): void {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const term = formData.get('excludeTerm') as string;
+
+    if (term) {
+      searchState.addExcludeTerm(term);
+      event.currentTarget.reset();
     }
   }
 </script>
@@ -43,10 +71,10 @@
 
   <div class="main-query">
     <h3>Main Terms</h3>
-    <div class="input-with-button">
+
+    <form onsubmit={handleAddMainTerm} class="input-with-button">
       <input type="text" bind:value={newQuery} placeholder="Add main term..." />
-      <button onclick={handleAddMainTerm}>Add</button>
-    </div>
+    </form>
 
     {#if searchState.query.length > 0}
       <ul class="tags">
@@ -62,10 +90,9 @@
 
   <div class="exact-terms">
     <h3>Exact Terms</h3>
-    <div class="input-with-button">
+    <form onsubmit={handleAddExactTerm} class="input-with-button">
       <input type="text" bind:value={newExactTerm} placeholder="Add exact term..." />
-      <button onclick={handleAddExactTerm}>Add</button>
-    </div>
+    </form>
 
     {#if searchState.exactQuery.length > 0}
       <ul class="tags">
@@ -81,24 +108,9 @@
 
   <div class="like-terms">
     <h3>Similar Terms</h3>
-    <div class="input-with-button">
-      <input
-        type="text"
-        placeholder="Add similar term..."
-        onkeydown={e =>
-          e.key === "Enter" &&
-          searchState.addLikeTerm(e.currentTarget.value) &&
-          (e.currentTarget.value = "")}
-      />
-      <button
-        onclick={e => {
-          const input = e.currentTarget.previousElementSibling as HTMLInputElement;
-          searchState.addLikeTerm(input.value);
-          input.value = "";
-        }}>Add
-      </button
-      >
-    </div>
+    <form onsubmit={handleAddLikeTerm} class="input-with-button">
+      <input type="text" placeholder="Add similar term..." name="likeTerm" />
+    </form>
 
     {#if searchState.likeQuery.length > 0}
       <ul class="tags">
@@ -114,24 +126,9 @@
 
   <div class="excluded-terms">
     <h3>Excluded Terms</h3>
-    <div class="input-with-button">
-      <input
-        type="text"
-        placeholder="Add excluded term..."
-        onkeydown={e =>
-          e.key === "Enter" &&
-          searchState.addExcludeTerm(e.currentTarget.value) &&
-          (e.currentTarget.value = "")}
-      />
-      <button
-        onclick={e => {
-          const input = e.currentTarget.previousElementSibling as HTMLInputElement;
-          searchState.addExcludeTerm(input.value);
-          input.value = "";
-        }}>Add
-      </button
-      >
-    </div>
+    <form onsubmit={handleAddExcludeTerm} class="input-with-button">
+      <input type="text" placeholder="Add excluded term..." name="excludeTerm" />
+    </form>
 
     {#if searchState.doesNotIncludeQuery.length > 0}
       <ul class="tags">
@@ -147,10 +144,9 @@
 
   <div class="allowed-sites">
     <h3>Allowed Sites</h3>
-    <div class="input-with-button">
+    <form onsubmit={handleAddSite} class="input-with-button">
       <input type="text" bind:value={newSite} placeholder="Add domain (e.g. example.com)..." />
-      <button onclick={handleAddSite}>Add</button>
-    </div>
+    </form>
 
     {#if searchState.allowedSites.length > 0}
       <ul class="tags">
@@ -250,7 +246,7 @@
   button {
     padding: 0.5rem 1rem;
     background-color: var(--color-primary);
-    color: var(--foreground-color);
+    color: var(--bg-color);
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -274,14 +270,14 @@
     align-items: center;
     gap: 0.25rem;
     padding: 0.25rem 0.5rem;
-    background-color: var(--background-color);
+    background-color: var(--color-info);
     border-radius: 4px;
     font-size: 0.9rem;
   }
 
   .tag .remove {
     background: none;
-    color: #666;
+    color: var(--fg-color);
     border: none;
     padding: 0 0.25rem;
     font-size: 1.2rem;
@@ -305,7 +301,8 @@
   .search-button {
     width: 100%;
     padding: 0.75rem;
-    background-color: #4a56e2;
+    background-color: var(--color-primary);
+    color: var(--bg-color);
     font-weight: bold;
   }
 </style>
